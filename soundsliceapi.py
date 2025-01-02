@@ -84,6 +84,34 @@ class Client:
         if folder_id is not None:
             data['folder_id'] = folder_id
         return self.make_request(METHOD_POST, '/slices/', data=data)
+    
+    def update_slice(self, scorebash, name=None, artist=None, has_shareable_url=False, embed_status=None, allow_synth= True, allow_synth_overlay= False, auto_pitches=2,description='',instrument_names=0, hide_notation=False, show_title_in_notation=True , can_print=False):
+        data = {}
+        if name is not None:
+            data['name'] = name
+        if artist is not None:
+            data['artist'] = artist
+        if has_shareable_url:
+            data['status'] = STATUS_URL_SHAREABLE
+        if embed_status is not None:
+            data['embed_status'] = embed_status
+        if allow_synth_overlay is not None:
+            data['allow_synth_overlay'] = allow_synth_overlay
+        if auto_pitches is not None:
+            data['auto_pitches'] = auto_pitches
+        if description is not None:
+            data['description'] = description
+        if instrument_names is not None:
+            data['instrument_names'] = instrument_names
+        if hide_notation is not None:
+            data['hide_notation'] = hide_notation
+        if show_title_in_notation is not None:
+            data['show_title_in_notation'] = show_title_in_notation
+        if allow_synth is not None:
+            data['allow_synth'] = allow_synth
+        if can_print:
+            data['print_status'] = PRINT_STATUS_ALLOWED
+        return self.make_request(METHOD_POST, f'/slices/{scorebash}/', data=data)
 
     def delete_slice(self, scorehash):
         return self.make_request(METHOD_DELETE, f'/slices/{scorehash}/')
@@ -181,6 +209,9 @@ class Client:
             data['parent_id'] = parent_id
         return self.make_request(METHOD_POST, '/folders/', data=data)
 
+    def get_folder(self,foler_id):
+        return self.make_request(METHOD_GET, f'/folders/{foler_id}/')
+    
     def rename_folder(self, folder_id, name):
         data = {'name': name}
         return self.make_request(METHOD_POST, f'/folders/{folder_id}/', data=data)

@@ -21,7 +21,7 @@ client = Client(APP_ID, PASSWORD)
 
 Available methods are:
 
-### create_slice(**kwargs)
+### create_slice(\*\*kwargs)
 
 Creates a slice. Note this only creates the metadata for the slice, not the notation.
 
@@ -49,26 +49,63 @@ client.create_slice(
     folder_id='31045'
 )
 ```
+
 Returns a dictionary of slice information with the following keys:
 
-| Key               | Example                | Notes               |
-| ----------------- | ---------------------- | ------------------- |
-| `"scorehash"`       | `"nyfcn"`                | The slice’s scorehash. This is a unique identifier with a maximum size of 6 characters. |
-| `"url"`             | `"/slices/nyfcn/"`       | The slice’s URL on soundslice.com. Note this URL will return a 404 until the slice has notation. |
-| `"embed_url"`       | `"/slices/nyfcn/embed/"` | Only included if the slice has embedding enabled. This is the URL to put in your `<iframe>`. Note this URL will return a 404 until the slice has notation. |
+| Key           | Example                  | Notes                                                                                                                                                      |
+| ------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `"scorehash"` | `"nyfcn"`                | The slice’s scorehash. This is a unique identifier with a maximum size of 6 characters.                                                                    |
+| `"url"`       | `"/slices/nyfcn/"`       | The slice’s URL on soundslice.com. Note this URL will return a 404 until the slice has notation.                                                           |
+| `"embed_url"` | `"/slices/nyfcn/embed/"` | Only included if the slice has embedding enabled. This is the URL to put in your `<iframe>`. Note this URL will return a 404 until the slice has notation. |
+
+### update_slice(\*\*kwargs)
+
+Updates an available slice.
+
+```python
+from soundsliceapi import Constants
+
+client.update_slice(
+    #  All fields optional except scorebash.
+    scorebash='kf23Hda',
+
+    name='The Power of Love',
+
+    artist='Huey Lewis and the News',
+
+    # Slice URL is private by default.
+    has_shareable_url=True,
+
+    # Embedding is disabled by default. To enable pass
+    # EMBED_STATUS_ON_ALLOWLIST.
+    embed_status=Constants.EMBED_STATUS_ON_ALLOWLIST,
+
+    # Printing is disabled by default.
+    can_print=True,
+)
+```
+
+Returns a dictionary of slice information with the following keys:
+
+| Key           | Example   | Notes                                                                                   |
+| ------------- | --------- | --------------------------------------------------------------------------------------- |
+| `"scorehash"` | `"nyfcn"` | The slice’s scorehash. This is a unique identifier with a maximum size of 6 characters. |
+| has notation. |
 
 ### delete_slice(scorehash)
+
 Deletes a slice, including all its associated data such as recordings.
 
 ```python
 client.delete_slice("scorehash")
 ```
+
 Returns a dictionary of slice information with the following keys:
 
-| Key               | Example                | Notes               |
-| ----------------- | ---------------------- | ------------------- |
-| `"name"`            | `"Sussudio"`             | String. The slice’s name. |
-| `"artist"`          | `"Phil Collins"`         | String. The slice’s artist. Might be an empty string, but it will always exist in the JSON. |
+| Key        | Example          | Notes                                                                                       |
+| ---------- | ---------------- | ------------------------------------------------------------------------------------------- |
+| `"name"`   | `"Sussudio"`     | String. The slice’s name.                                                                   |
+| `"artist"` | `"Phil Collins"` | String. The slice’s artist. Might be an empty string, but it will always exist in the JSON. |
 
 ### list_slices()
 
@@ -80,18 +117,18 @@ client.list_slices()
 
 Returns a dictionary of slice information with the following keys:
 
-| Key               | Example                | Notes               |
-| ----------------- | ---------------------- | ------------------- |
-| `"scorehash"`       | `"nyfcn"`                | This is a unique identifier with a maximum size of 6 characters. |
-| `"url"`             | `"/slices/MpYDc/"`       | String. The slice’s URL on soundslice.com. Note this URL will return a 404 if the slice has no notation. |
-| `"name"`            | `"Take Me Home Tonight"` | String. The slice’s name. |
-| `"artist"`          | `"Eddie Money"`          | String. The slice’s artist. Might be an empty string, but it will always exist in the JSON. |
-| `"status"`          | `1`                      | Integer. The slice’s secret URL status. <ul><li>`1` — Secret URL is disabled (default value, if not provided)</li><li>`3` — Secret URL is enabled</li></ul> |
-| `"embed_status"`    | `1`                      | Integer. The slice’s embed status. <ul><li>`1` — Disabled (default value, if not provided)</li><li>`4` — Enabled on allowlist domains</li></ul>
-| `"can_print"`       | `False`                  | Boolean. Whether the slice can be printed. |
-| `"has_notation"`    | `True`                   | Boolean.  Whether the slice has notation. |
-| `"show_notation"`   | `True`                   | Boolean. Whether the slice can show its notation. This is true except when you’ve manually disabled notation for the slice, in the slice manager. |
-| `"recording_count"` | `3`                      | Integer. The number of recordings the slice has. |
+| Key                 | Example                  | Notes                                                                                                                                                                 |
+| ------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `"scorehash"`       | `"nyfcn"`                | This is a unique identifier with a maximum size of 6 characters.                                                                                                      |
+| `"url"`             | `"/slices/MpYDc/"`       | String. The slice’s URL on soundslice.com. Note this URL will return a 404 if the slice has no notation.                                                              |
+| `"name"`            | `"Take Me Home Tonight"` | String. The slice’s name.                                                                                                                                             |
+| `"artist"`          | `"Eddie Money"`          | String. The slice’s artist. Might be an empty string, but it will always exist in the JSON.                                                                           |
+| `"status"`          | `1`                      | Integer. The slice’s secret URL status. <ul><li>`1` — Secret URL is disabled (default value, if not provided)</li><li>`3` — Secret URL is enabled</li></ul>           |
+| `"embed_status"`    | `1`                      | Integer. The slice’s embed status. <ul><li>`1` — Disabled (default value, if not provided)</li><li>`4` — Enabled on allowlist domains</li></ul>                       |
+| `"can_print"`       | `False`                  | Boolean. Whether the slice can be printed.                                                                                                                            |
+| `"has_notation"`    | `True`                   | Boolean. Whether the slice has notation.                                                                                                                              |
+| `"show_notation"`   | `True`                   | Boolean. Whether the slice can show its notation. This is true except when you’ve manually disabled notation for the slice, in the slice manager.                     |
+| `"recording_count"` | `3`                      | Integer. The number of recordings the slice has.                                                                                                                      |
 | `"embed_url"`       | `"/slices/d8sDc/embed/"` | String. The slice’s embed URL. Note this URL will return a 404 if the slice has no notation, and this key will not exist in the JSON if the slice cannot be embedded. |
 
 ### get_slice(scorehash)
@@ -112,9 +149,9 @@ client.get_original_slice_notation_file('scorehash')
 
 On success returns in a dictionary with the following key:
 
-| Key               | Example                                                                   | Notes               |
-| ----------------- | ------------------------------------------------------------------------  | ------------------- |
-| `"url"`             | `"https://soundslice-data.s3.amazonaws.com/json/592129/rawscore?response…"` | This is a URL where you can download the original notation file within the next 15 minutes.<br /><br />Note `"url"` will be set to the empty string for slices that don’t have an original notation file. |
+| Key     | Example                                                                     | Notes                                                                                                                                                                                                     |
+| ------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `"url"` | `"https://soundslice-data.s3.amazonaws.com/json/592129/rawscore?response…"` | This is a URL where you can download the original notation file within the next 15 minutes.<br /><br />Note `"url"` will be set to the empty string for slices that don’t have an original notation file. |
 
 ### get_slice_musicxml(scorehash)
 
@@ -128,7 +165,7 @@ client.get_slice_musicxml('scorehash')
 
 On success returns a string containing the MusicXML for the slice.
 
-### upload_slice_notation(**kwargs)
+### upload_slice_notation(\*\*kwargs)
 
 Uploads a notation file into a given slice.
 
@@ -149,13 +186,13 @@ client.upload_slice_notation(
 
 If a `callback_url` is provided, we’ll notify you when the upload has processed via making a POST to your specified URL. These POST requests will include these keys:
 
-| Key               | Example                             | Notes               |
-| ----------------- | ----------------------------------- | ------------------- |
-| `"scorehash"`      | `"d8sDc"`                             | String. The newly created slice’s scorehash. |
-| `"success"`         | `"1"`                                 | String. `"1"` if it was successfully processed. `"2"` if there was an error. |
-| `"error"`           | `"We couldn't parse the given file."` | String. An error message, in case of errors. |
+| Key           | Example                               | Notes                                                                        |
+| ------------- | ------------------------------------- | ---------------------------------------------------------------------------- |
+| `"scorehash"` | `"d8sDc"`                             | String. The newly created slice’s scorehash.                                 |
+| `"success"`   | `"1"`                                 | String. `"1"` if it was successfully processed. `"2"` if there was an error. |
+| `"error"`     | `"We couldn't parse the given file."` | String. An error message, in case of errors.                                 |
 
-### move_slice_to_folder(**kwargs)
+### move_slice_to_folder(\*\*kwargs)
 
 Moves a slice to a given folder, in either your own account or an organization you belong to.
 
@@ -172,9 +209,9 @@ client.move_slice_to_folder(
 
 On success, returns in a dictionary with the following key:
 
-| Key     | Example | Notes   |
-| ------- | ------- | ------- |
-| `"id"`    | `0`       | Integer. The ID of the folder, or `0` (zero) for the root folder. |
+| Key    | Example | Notes                                                             |
+| ------ | ------- | ----------------------------------------------------------------- |
+| `"id"` | `0`     | Integer. The ID of the folder, or `0` (zero) for the root folder. |
 
 ### duplicate_slice(scorehash)
 
@@ -185,6 +222,7 @@ client.duplicate_slice("scorehash")
 ```
 
 Here’s what’s duplicated:
+
 - Title and metadata (except for creation date)
 - Notation data
 - All recordings
@@ -196,7 +234,7 @@ You’ll get an immediate response with the newly created slice’s information.
 
 On success, returns a dictionary with the same keys as documented in the `create_slice()` method.
 
-### create_recording(**kwargs)
+### create_recording(\*\*kwargs)
 
 Creates a recording.
 
@@ -235,30 +273,30 @@ client.create_recording(
 
 The `source_data` value is different depending on the recording source, as follows:
 
-| If source is...       | Example source_data | Notes |
-| --------------------- | -------------- | ----- |
-| `SOURCE_YOUTUBE`      | `"dQw4w9WgXcQ"` | The URL or ID of the YouTube video. Required. |
-| `SOURCE_VIDEO_URL`    | `"https://www.rmp-streaming.com/media/big-buck-bunny-360p.mp4"` | The URL of the video. Either this or `hls_url` is required. (You can also provide both.) |
-| `SOURCE_VIMEO` | `"253989945"` | The ID of the Vimeo video. Required. |
-| `SOURCE_WISTIA` | `"j38ihh83m5"` | The ID of the Wistia video. Required. |
-| `SOURCE_MP3_URL` | `"https://stream.thisamericanlife.org/31/31.mp3"` | The URL of the MP3. Required. |
+| If source is...    | Example source_data                                             | Notes                                                                                    |
+| ------------------ | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `SOURCE_YOUTUBE`   | `"dQw4w9WgXcQ"`                                                 | The URL or ID of the YouTube video. Required.                                            |
+| `SOURCE_VIDEO_URL` | `"https://www.rmp-streaming.com/media/big-buck-bunny-360p.mp4"` | The URL of the video. Either this or `hls_url` is required. (You can also provide both.) |
+| `SOURCE_VIMEO`     | `"253989945"`                                                   | The ID of the Vimeo video. Required.                                                     |
+| `SOURCE_WISTIA`    | `"j38ihh83m5"`                                                  | The ID of the Wistia video. Required.                                                    |
+| `SOURCE_MP3_URL`   | `"https://stream.thisamericanlife.org/31/31.mp3"`               | The URL of the MP3. Required.                                                            |
 
 ### get_slice_recordings(scorehash)
 
 Gets data about all recordings in a given slice. On success, returns in a dictionary with the following keys:
 
-| Key                | Example                             | Notes               |
-| ------------------ | ----------------------------------- | ------------------- |
-| `"id"`               | `626940`                              | The recording's ID. |
-| `"name"`             | `"Video"`                             | The recording’s name. |
-| `"source"`           | `1`                                   | The recording’s `source` (see above for details). |
-| `"source_data"`      |  `"eBG7P-K-r1Y"`                      | The recording’s `source data` (see above for details). |
-| `"hls_url"`          | `""`                                  | The recording’s HLS URL, or an empty string. |
-| `"cropped_duration"` | `289.0`                               | The recording’s duration, in seconds, taking cropping into account. (For example, if the raw recording is 60 seconds long but you’ve cropped it to remove the first 10 seconds, `cropped_duration` will be `50`.) This will be set to `null` for recordings that don’t have a duration, such as recordings that are still being processed. |
-| `"syncpoint_count"`  | `8`                                   | The recording’s number of syncpoints. |
-| `"status"`           | `"ready"`                             | The recording’s status. The possible values are: <ul><li>`waiting` — waiting for media to be uploaded</li><li>`processing` — processing uploaded media</li><li>`ready` — ready</li><li>`error` — encountered processing error</li></ul>
+| Key                  | Example         | Notes                                                                                                                                                                                                                                                                                                                                      |
+| -------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `"id"`               | `626940`        | The recording's ID.                                                                                                                                                                                                                                                                                                                        |
+| `"name"`             | `"Video"`       | The recording’s name.                                                                                                                                                                                                                                                                                                                      |
+| `"source"`           | `1`             | The recording’s `source` (see above for details).                                                                                                                                                                                                                                                                                          |
+| `"source_data"`      | `"eBG7P-K-r1Y"` | The recording’s `source data` (see above for details).                                                                                                                                                                                                                                                                                     |
+| `"hls_url"`          | `""`            | The recording’s HLS URL, or an empty string.                                                                                                                                                                                                                                                                                               |
+| `"cropped_duration"` | `289.0`         | The recording’s duration, in seconds, taking cropping into account. (For example, if the raw recording is 60 seconds long but you’ve cropped it to remove the first 10 seconds, `cropped_duration` will be `50`.) This will be set to `null` for recordings that don’t have a duration, such as recordings that are still being processed. |
+| `"syncpoint_count"`  | `8`             | The recording’s number of syncpoints.                                                                                                                                                                                                                                                                                                      |
+| `"status"`           | `"ready"`       | The recording’s status. The possible values are: <ul><li>`waiting` — waiting for media to be uploaded</li><li>`processing` — processing uploaded media</li><li>`ready` — ready</li><li>`error` — encountered processing error</li></ul>                                                                                                    |
 
-### reorder_slice_recordings(**kwargs)
+### reorder_slice_recordings(\*\*kwargs)
 
 Sets the order of the recordings in a slice.
 
@@ -276,7 +314,7 @@ client.reorder_slice_recordings(
 
 On success, the result will be an empty JSON object.
 
-### change_recording(**kwargs)
+### change_recording(\*\*kwargs)
 
 Changes metadata for a recording.
 
@@ -296,12 +334,12 @@ client.change_recording(
 
 On success, returns in a dictionary with the following keys:
 
-| Key                | Example                             | Notes               |
-| ------------------ | ----------------------------------- | ------------------- |
-| `"id"`               | `626940`                          | The recording's ID. |
-| `"name"`             | `"YouTube performance"`           | The recording’s name. |
-| `"source_data"`      |  `"IuUwyIPSgnQ"`                  | The recording’s `source data` (see above for details). |
-| `"hls_url"`          | `""`                              | The recording’s HLS URL, or an empty string. |
+| Key             | Example                 | Notes                                                  |
+| --------------- | ----------------------- | ------------------------------------------------------ |
+| `"id"`          | `626940`                | The recording's ID.                                    |
+| `"name"`        | `"YouTube performance"` | The recording’s name.                                  |
+| `"source_data"` | `"IuUwyIPSgnQ"`         | The recording’s `source data` (see above for details). |
+| `"hls_url"`     | `""`                    | The recording’s HLS URL, or an empty string.           |
 
 ### delete_recording(recording_id)
 
@@ -310,11 +348,12 @@ Deletes a recording, including all its associated data such as syncpoints and up
 ```python
 client.delete_recording("626940")
 ```
+
 On success, returns in a dictionary with the following key:
 
-| Key       | Example | Notes   |
-| --------- | ------- | ------- |
-| `"name"`    | `"Video"` | String. The recording's name. |
+| Key      | Example   | Notes                         |
+| -------- | --------- | ----------------------------- |
+| `"name"` | `"Video"` | String. The recording's name. |
 
 ### get_recording_syncpoints(recording_id)
 
@@ -323,9 +362,10 @@ Retrieves the syncpoints for a recording.
 ```python
 client.get_recording_syncpoints("626940")
 ```
+
 On success, returns a JSON list representing the syncpoints. See <a href="https://www.soundslice.com/help/data-api/#syncpointdata">syncpoint data format</a>.
 
-### put_recording_syncpoints(**kwargs)
+### put_recording_syncpoints(\*\*kwargs)
 
 Sets the syncpoints for a recording.
 
@@ -353,11 +393,11 @@ client.put_recording_syncpoints(
 
 On success, returns in a dictionary with the following key:
 
-| Key     | Example | Notes   |
-| ------- | ------  | ------- |
-| `"id"`    | `626940`  | The recording ID, as an integer. |
+| Key    | Example  | Notes                            |
+| ------ | -------- | -------------------------------- |
+| `"id"` | `626940` | The recording ID, as an integer. |
 
-### create_folder(**kwargs)
+### create_folder(\*\*kwargs)
 
 Creates a folder within your account’s slice manager.
 
@@ -374,11 +414,28 @@ client.create_folder(
 
 On success returns in a dictionary with the following key:
 
-| Key     | Example | Notes   |
-| ------- | ------  | ------- |
-| `"id"`    | `31044`  | The ID of the newly created folder. |
+| Key    | Example | Notes                               |
+| ------ | ------- | ----------------------------------- |
+| `"id"` | `31044` | The ID of the newly created folder. |
 
-### rename_folder(**kwargs)
+### get_folder(\*\*kwargs)
+
+Renames the given folder within your account’s slice manager.
+
+```python
+# All required.
+folder_id=31044
+```
+
+On success, returns the folder details and also a list of subfolders and slices:
+
+| Key            | Example       | Notes                   |
+| -------------- | ------------- | ----------------------- |
+| `"name"`       | `Folder Name` | The name of the folder. |
+| `"subfolders"` | `Subfolders`  | A list of subfolders.   |
+| `"slices"`     | `Slices`      | A list of slices.       |
+
+### rename_folder(\*\*kwargs)
 
 Renames the given folder within your account’s slice manager.
 
@@ -391,9 +448,9 @@ name="New practice list"
 
 On success, returns in a dictionary with the following key:
 
-| Key     | Example | Notes   |
-| ------- | ------  | ------- |
-| `"id"`    | `31044`  | The ID of the folder. |
+| Key    | Example | Notes                 |
+| ------ | ------- | --------------------- |
+| `"id"` | `31044` | The ID of the folder. |
 
 ### delete_folder(folder_id)
 
@@ -407,11 +464,11 @@ client.delete_folder(
 
 On success, returns in a dictionary with the following key:
 
-| Key         | Example | Notes   |
-| ----------- | ------  | ------- |
-| `"parent_id"` | `31043`   | The ID of the deleted folder’s parent folder, or `None` if the deleted folder was in the root. |
+| Key           | Example | Notes                                                                                          |
+| ------------- | ------- | ---------------------------------------------------------------------------------------------- |
+| `"parent_id"` | `31043` | The ID of the deleted folder’s parent folder, or `None` if the deleted folder was in the root. |
 
-### list_folders(**kwargs)
+### list_folders(\*\*kwargs)
 
 Lists all folders within your account’s slice manager.
 
