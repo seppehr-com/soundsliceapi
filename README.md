@@ -66,8 +66,8 @@ Updates an available slice.
 from soundsliceapi import Constants
 
 client.update_slice(
-    #  All fields optional except scorebash.
-    scorebash='kf23Hda',
+    #  All fields optional except scorehash.
+    scorehash='kf23Hda',
 
     name='The Power of Love',
 

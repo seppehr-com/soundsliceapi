@@ -85,7 +85,7 @@ class Client:
             data['folder_id'] = folder_id
         return self.make_request(METHOD_POST, '/slices/', data=data)
     
-    def update_slice(self, scorebash, name=None, artist=None, has_shareable_url=False, embed_status=None, allow_synth= True, allow_synth_overlay= False, auto_pitches=2,description='',instrument_names=0, hide_notation=False, show_title_in_notation=True , can_print=False):
+    def update_slice(self, scorehash, name=None, artist=None, has_shareable_url=False, embed_status=None, allow_synth= True, allow_synth_overlay= False, auto_pitches=2, description='', instrument_names=0, hide_notation=False, show_title_in_notation=True, can_print=False):
         data = {}
         if name is not None:
             data['name'] = name
@@ -111,7 +111,7 @@ class Client:
             data['allow_synth'] = allow_synth
         if can_print:
             data['print_status'] = PRINT_STATUS_ALLOWED
-        return self.make_request(METHOD_POST, f'/slices/{scorebash}/', data=data)
+        return self.make_request(METHOD_POST, f'/slices/{scorehash}/', data=data)
 
     def delete_slice(self, scorehash):
         return self.make_request(METHOD_DELETE, f'/slices/{scorehash}/')
@@ -209,8 +209,8 @@ class Client:
             data['parent_id'] = parent_id
         return self.make_request(METHOD_POST, '/folders/', data=data)
 
-    def get_folder(self,foler_id):
-        return self.make_request(METHOD_GET, f'/folders/{foler_id}/')
+    def get_folder(self,folder_id):
+        return self.make_request(METHOD_GET, f'/folders/{folder_id}/')
     
     def rename_folder(self, folder_id, name):
         data = {'name': name}
